@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tgz
+
+.DS_Store
+
+dev-n8n/.n8n/
+dev-n8n/node_modules/
+dev-n8n/.env
+dev-n8n/package-lock.json
+
