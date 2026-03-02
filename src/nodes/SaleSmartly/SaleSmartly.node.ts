@@ -63,7 +63,7 @@ export class SaleSmartly implements INodeType {
     outputs: ['main'],
     credentials: [
       {
-        name: 'salesmartlyApi',
+        name: 'salesmartly',
         required: true,
       },
     ],
