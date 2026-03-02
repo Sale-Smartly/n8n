@@ -112,7 +112,7 @@ export class SaleSmartly implements INodeType {
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
     const items = this.getInputData();
     const operation = this.getNodeParameter('operation', 0) as string;
-    const credentials = await this.getCredentials('salesmartlyApi');
+    const credentials = await this.getCredentials('salesmartly');
 
     const baseUrl = String(credentials.baseUrl);
     const token = String(credentials.token);

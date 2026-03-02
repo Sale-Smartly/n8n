@@ -64,7 +64,7 @@ class SaleSmartly {
     async execute() {
         const items = this.getInputData();
         const operation = this.getNodeParameter('operation', 0);
-        const credentials = await this.getCredentials('salesmartlyApi');
+        const credentials = await this.getCredentials('salesmartly');
         const baseUrl = String(credentials.baseUrl);
         const token = String(credentials.token);
         const requestUrl = `${baseUrl.replace(/\/$/, '')}/api/v2/get-contact-list`;
