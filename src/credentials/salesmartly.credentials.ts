@@ -1,7 +1,7 @@
 import type { IAuthenticateGeneric, ICredentialType, INodeProperties } from 'n8n-workflow';
 
-export class SaleSmartlyApi implements ICredentialType {
-  name = 'salesmartlyApi';
+export class SaleSmartly implements ICredentialType {
+  name = 'salesmartly';
   displayName = 'SaleSmartly API';
 
   authenticate: IAuthenticateGeneric = {
