@@ -3,6 +3,8 @@ node_modules/
 
 .DS_Store
 
+dist/
+
 dev-n8n/.n8n/
 dev-n8n/node_modules/
 dev-n8n/.env

@@ -1,4 +1,9 @@
-import type { IAuthenticateGeneric, ICredentialType, INodeProperties } from 'n8n-workflow';
+import type {
+  IAuthenticateGeneric,
+  ICredentialTestRequest,
+  ICredentialType,
+  INodeProperties,
+} from 'n8n-workflow';
 
 export class SaleSmartly implements ICredentialType {
   name = 'salesmartly';
@@ -10,6 +15,14 @@ export class SaleSmartly implements ICredentialType {
       headers: {
         'n8n-token': '={{$credentials.token}}',
       },
+    },
+  };
+
+  test: ICredentialTestRequest = {
+    request: {
+      baseURL: '={{$credentials.baseUrl}}',
+      url: '/api/v2/get-contact-list',
+      method: 'GET',
     },
   };
 
