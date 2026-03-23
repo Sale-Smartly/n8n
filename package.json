@@ -14,6 +14,7 @@
     "url": "https://github.com/Sale-Smartly/n8n/issues"
   },
   "description": "n8n community nodes for SaleSmartly",
+  "keywords": ["n8n-community-node-package"],
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,8 +31,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "n8n-core": ">=1.0.0",
-    "n8n-workflow": ">=1.0.0"
+    "n8n-workflow": "*"
   },
   "devDependencies": {
     "@types/node": "^22.13.1",

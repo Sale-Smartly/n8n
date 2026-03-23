@@ -1,8 +1,9 @@
-import type {
+import {
   IExecuteFunctions,
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from 'n8n-workflow';
 import type { IHttpRequestOptions } from 'n8n-workflow';
 
@@ -122,7 +123,7 @@ export class SaleSmartly implements INodeType {
 
     for (let i = 0; i < items.length; i++) {
       if (operation !== 'getCustomerByChatUser') {
-        throw new Error(`Unsupported operation: ${operation}`);
+        throw new NodeOperationError(this.getNode(), `Unsupported operation: ${operation}`);
       }
 
       const chatUserId = this.getNodeParameter('chat_user_id', i) as string;
@@ -155,6 +156,7 @@ export class SaleSmartly implements INodeType {
           total: data.total,
           raw,
         },
+        pairedItem: { item: i },
       });
     }
 
