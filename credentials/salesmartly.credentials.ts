@@ -3,11 +3,14 @@ import type {
   ICredentialTestRequest,
   ICredentialType,
   INodeProperties,
+  Icon,
 } from 'n8n-workflow';
 
 export class SaleSmartly implements ICredentialType {
   name = 'salesmartly';
   displayName = 'SaleSmartly API';
+  icon: Icon = 'file:salesmartly.svg';
+  documentationUrl = 'https://developer.salesmartly.com';
 
   authenticate: IAuthenticateGeneric = {
     type: 'generic',

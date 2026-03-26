@@ -4,7 +4,7 @@ import type {
   IWebhookFunctions,
   IWebhookResponseData,
 } from 'n8n-workflow';
-import { NodeOperationError } from 'n8n-workflow';
+import { NodeOperationError, NodeConnectionTypes } from 'n8n-workflow';
 
 import { parseSalesmartlyMessageTriggerPayload } from '../../utils/parseSalesmartlyMessageEvent';
 
@@ -15,12 +15,13 @@ export class SaleSmartlyMessageTrigger implements INodeType {
     icon: 'file:salesmartly.svg',
     group: ['trigger'],
     version: 1,
+    subtitle: 'On new message',
     description: 'Receive SaleSmartly message events via webhook',
     defaults: {
       name: 'SaleSmartly Message Trigger',
     },
     inputs: [],
-    outputs: ['main'],
+    outputs: [NodeConnectionTypes.Main],
     webhooks: [
       {
         name: 'default',

@@ -4,6 +4,9 @@ import {
   INodeType,
   INodeTypeDescription,
   NodeOperationError,
+  NodeApiError,
+  JsonObject,
+  NodeConnectionTypes,
 } from 'n8n-workflow';
 import type { IHttpRequestOptions } from 'n8n-workflow';
 
@@ -56,12 +59,13 @@ export class SaleSmartly implements INodeType {
     icon: 'file:salesmartly.svg',
     group: ['transform'],
     version: 1,
+    subtitle: '={{$parameter["operation"]}}',
     description: 'SaleSmartly API',
     defaults: {
       name: 'SaleSmartly',
     },
-    inputs: ['main'],
-    outputs: ['main'],
+    inputs: [NodeConnectionTypes.Main],
+    outputs: [NodeConnectionTypes.Main],
     credentials: [
       {
         name: 'salesmartly',
@@ -116,48 +120,61 @@ export class SaleSmartly implements INodeType {
     const credentials = await this.getCredentials('salesmartly');
 
     const baseUrl = String(credentials.baseUrl);
-    const token = String(credentials.token);
     const requestUrl = `${baseUrl.replace(/\/$/, '')}/api/v2/get-contact-list`;
 
     const returnItems: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      if (operation !== 'getCustomerByChatUser') {
-        throw new NodeOperationError(this.getNode(), `Unsupported operation: ${operation}`);
+      try {
+        if (operation !== 'getCustomerByChatUser') {
+          throw new NodeOperationError(this.getNode(), `Unsupported operation: ${operation}`);
+        }
+
+        const chatUserId = this.getNodeParameter('chat_user_id', i) as string;
+        const projectId = this.getNodeParameter('project_id', i) as string;
+
+        const requestOptions: IHttpRequestOptions = {
+          method: 'GET',
+          url: requestUrl,
+          qs: {
+            chat_user_id: chatUserId,
+            project_id: projectId,
+          },
+          json: true,
+        };
+
+        const raw = (await this.helpers.httpRequestWithAuthentication.call(
+          this,
+          'salesmartly',
+          requestOptions,
+        )) as SaleSmartlyGetContactListResponse;
+        const data = raw.data ?? {};
+
+        returnItems.push({
+          json: {
+            code: raw.code,
+            msg: raw.msg,
+            request_id: raw.request_id,
+            list: data.list,
+            page: data.page,
+            page_size: data.page_size,
+            total: data.total,
+            raw,
+          },
+          pairedItem: { item: i },
+        });
+      } catch (error) {
+        if (this.continueOnFail()) {
+          returnItems.push({
+            json: {
+              error: (error as Error).message,
+            },
+            pairedItem: { item: i },
+          });
+          continue;
+        }
+        throw new NodeApiError(this.getNode(), error as JsonObject);
       }
-
-      const chatUserId = this.getNodeParameter('chat_user_id', i) as string;
-      const projectId = this.getNodeParameter('project_id', i) as string;
-
-      const requestOptions: IHttpRequestOptions = {
-        method: 'GET',
-        url: requestUrl,
-        qs: {
-          chat_user_id: chatUserId,
-          project_id: projectId,
-        },
-        headers: {
-          'n8n-token': token,
-        },
-        json: true,
-      };
-
-      const raw = (await this.helpers.httpRequest(requestOptions)) as SaleSmartlyGetContactListResponse;
-      const data = raw.data ?? {};
-
-      returnItems.push({
-        json: {
-          code: raw.code,
-          msg: raw.msg,
-          request_id: raw.request_id,
-          list: data.list,
-          page: data.page,
-          page_size: data.page_size,
-          total: data.total,
-          raw,
-        },
-        pairedItem: { item: i },
-      });
     }
 
     return [returnItems];

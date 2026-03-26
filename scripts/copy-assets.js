@@ -21,7 +21,6 @@ function copyAssets(srcDir, destDir) {
     } else if (EXTENSIONS.includes(path.extname(entry.name).toLowerCase())) {
       fs.mkdirSync(destDir, { recursive: true });
       fs.copyFileSync(srcPath, destPath);
-      console.log(`Copied: ${srcPath} -> ${destPath}`);
     }
   }
 }
