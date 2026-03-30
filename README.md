@@ -1,6 +1,19 @@
-# n8n-nodes-salesmartly
+# n8n-nodes-salesmartly-npm
 
 n8n community nodes for SaleSmartly.
+
+## Package
+
+Install the published community package:
+
+```bash
+npm install n8n-nodes-salesmartly-npm
+```
+
+Important:
+
+- The exact npm package name is `n8n-nodes-salesmartly-npm`.
+- Use this exact spelling in the n8n Creator submission and during local installation tests.
 
 ## Nodes
 
@@ -47,3 +60,15 @@ npm test
 ## Local n8n (Docker)
 
 See `dev-n8n/docker-compose.yml`.
+
+To reproduce the installation check locally:
+
+```bash
+docker compose up -d
+```
+
+Then install the package inside n8n using the exact package name:
+
+```bash
+npm install n8n-nodes-salesmartly-npm
+```
